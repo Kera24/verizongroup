@@ -1,4 +1,18 @@
 import type { Metadata } from "next";
+import "./globals.css";
+import { Inter } from "next/font/google";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import { SITE_CONFIG } from "@/lib/config";
+
+const inter = Inter({ subsets: ["latin"], display: "swap" });
+
+export const metadata: Metadata = {
+  title: `${SITE_CONFIG.name} | End-to-end digital solutions for education and enterprises`,
+  description: SITE_CONFIG.tagline,
+  openGraph: {
+    title: SITE_CONFIG.name,
+    description: SITE_CONFIG.tagline,
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
@@ -20,6 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={inter.className}>
         <Navbar />
+        <main>{children}</main>
         <main className="bg-white text-slate-900">{children}</main>
         <Footer />
       </body>
