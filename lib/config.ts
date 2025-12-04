@@ -1,41 +1,87 @@
-export const SITE_CONFIG = {
+import type { LucideIcon } from "lucide-react";
+import { Cloud, GraduationCap, Layers, Server } from "lucide-react";
+
+export const COMPANY = {
   name: "Verizon Group",
   tagline: "End-to-end digital solutions for education and enterprises.",
-  contactEmail: "hello@verizongroup.com",
-  contactPhone: "+61-000-000-000",
+  email: "hello@verizongroup.com",
+  phone: "+61-000-000-000",
+  address: "123 Market Street, Sydney, Australia",
   location: "Sydney, Australia (serving clients globally)",
-  googleCalendarUrl:
-    process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_BOOKING_URL ||
-    "https://calendar.google.com/calendar/u/0?cid=Y19sNjJxMmRtZ2I1NzJoYmNncWEycGJtb2x2NEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t",
 };
 
-export const navigationLinks = [
+export const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
   { label: "Book Meeting", href: "/book-meeting" },
   { label: "Contact", href: "/contact" },
 ];
 
-export const services = [
+export type Service = {
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  items?: string[];
+};
+
+export const SERVICES: Service[] = [
   {
     title: "Complete Moodle Solution",
     description: "Setup, theme, plugins, integrations, and training for seamless learning experiences.",
-    icon: "GraduationCap",
+    icon: GraduationCap,
+    items: ["Implementation & theming", "Plugin governance", "Training & adoption"],
   },
   {
     title: "Server Hosting & Maintenance",
     description: "VPS, backups, security hardening, and proactive monitoring to keep you online.",
-    icon: "Server",
+    icon: Server,
+    items: ["Performance tuning", "Uptime monitoring", "Disaster recovery"],
   },
   {
     title: "Cloud Infrastructure & DevOps",
     description: "CI/CD pipelines, container orchestration, and auto-scaling tailored to your workloads.",
-    icon: "Cloud",
+    icon: Cloud,
+    items: ["Kubernetes & Docker", "Automation pipelines", "Logging & metrics"],
   },
   {
     title: "Custom Integrations & Automation",
     description: "APIs, SIS/CRM integrations, and automated reporting to streamline operations.",
-    icon: "Workflow",
+    icon: Layers,
+    items: ["CRM & SIS connectors", "Reporting automation", "Single sign-on"],
+  },
+];
+
+export const FEATURE_HIGHLIGHTS = [
+  {
+    title: "End-to-End Support",
+    description: "From planning to launch and ongoing care, we own the details so you can focus on learners.",
+  },
+  {
+    title: "Education-First Expertise",
+    description: "Specialists in LMS, digital learning, and the integrations that keep them running.",
+  },
+  {
+    title: "Secure & Scalable Infrastructure",
+    description: "Hardened environments, best-practice backups, and observability baked in.",
+  },
+  {
+    title: "Transparent Reporting & Monitoring",
+    description: "Clear metrics, weekly updates, and shared dashboards for total visibility.",
+  },
+];
+
+export const USE_CASES = [
+  {
+    title: "For Colleges & Training Providers",
+    description: "Robust LMS deployments, multi-campus support, and accessible learning journeys.",
+  },
+  {
+    title: "For Enterprises & SMEs",
+    description: "Secure hosting, compliance-ready architectures, and integration with your business apps.",
+  },
+  {
+    title: "For EdTech Startups",
+    description: "Cloud-native builds, rapid prototyping, and observability to move fast with confidence.",
   },
 ];
 
@@ -45,7 +91,7 @@ export type Testimonial = {
   role: string;
 };
 
-export const testimonials: Testimonial[] = [
+export const TESTIMONIALS: Testimonial[] = [
   {
     quote:
       "Verizon Group delivered a seamless Moodle rollout with top-notch support. Their team felt like an extension of ours.",
@@ -65,41 +111,7 @@ export const testimonials: Testimonial[] = [
   },
 ];
 
-export const featureHighlights = [
-  {
-    title: "End-to-End Support",
-    description: "From planning to launch and ongoing care, we own the details so you can focus on learners.",
-  },
-  {
-    title: "Education-First Expertise",
-    description: "Specialists in LMS, digital learning, and the integrations that keep them running.",
-  },
-  {
-    title: "Secure & Scalable Infrastructure",
-    description: "Hardened environments, best-practice backups, and observability baked in.",
-  },
-  {
-    title: "Transparent Reporting & Monitoring",
-    description: "Clear metrics, weekly updates, and shared dashboards for total visibility.",
-  },
-];
-
-export const useCases = [
-  {
-    title: "For Colleges & Training Providers",
-    description: "Robust LMS deployments, multi-campus support, and accessible learning journeys.",
-  },
-  {
-    title: "For Enterprises & SMEs",
-    description: "Secure hosting, compliance-ready architectures, and integration with your business apps.",
-  },
-  {
-    title: "For EdTech Startups",
-    description: "Cloud-native builds, rapid prototyping, and observability to move fast with confidence.",
-  },
-];
-
-export const serviceCategories = [
+export const SERVICE_CATEGORIES = [
   {
     title: "Complete Moodle Solution",
     items: [
@@ -133,14 +145,7 @@ export const serviceCategories = [
     ],
   },
 ];
-export const COMPANY = {
-  name: "Verizon Group",
-  tagline: "End-to-end digital solutions for education and enterprises.",
-  email: "hello@verizongroup.com",
-  phone: "+61-000-000-000",
-  address: "123 Market Street, Sydney, Australia",
-};
 
 export const GOOGLE_CALENDAR_BOOKING_URL =
   process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_BOOKING_URL ||
-  "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ1placeholder";
+  "https://calendar.google.com/calendar/u/0?cid=Y19sNjJxMmRtZ2I1NzJoYmNncWEycGJtb2x2NEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t";
