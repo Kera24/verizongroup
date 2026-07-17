@@ -3,66 +3,104 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { NAV_LINKS } from "@/lib/config";
+import { StarMark } from "@/components/brand/StarMark";
+import { COMPANY, NAV_LINKS } from "@/lib/config";
 
 export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const reducedMotion = useReducedMotion();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/90 backdrop-blur">
-      <div className="container flex items-center justify-between py-4">
-        <Link href="/" className="text-lg font-semibold text-primary">
-          Verizon Group
-        </Link>
-        <nav className="hidden items-center gap-8 text-sm font-medium text-slate-700 md:flex">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`transition hover:text-accent ${pathname === link.href ? "text-primary" : ""}`}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <Link href="/request-service" className="btn-primary text-xs">
-            Request a Proposal
-          </Link>
-        </nav>
-        <button
-          className="inline-flex items-center justify-center rounded-full border border-slate-200 p-2 text-slate-700 transition hover:border-accent hover:text-accent md:hidden"
-          onClick={() => setOpen((prev) => !prev)}
-          aria-label="Toggle navigation"
+    <header className="sticky top-0 z-50 border-b border-border bg-canvas/90 backdrop-blur">
+      <div className="container flex items-center justify-between py-3.5">
+        <Link
+          href="/"
+          className="flex items-center gap-2.5 rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-focus-ring"
+          aria-label={`${COMPANY.name} — home`}
         >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
-      </div>
-      {open && (
-        <div className="border-t border-slate-100 bg-white md:hidden">
-          <div className="container flex flex-col gap-2 py-4 text-sm font-semibold text-slate-700">
-            {NAV_LINKS.map((link) => (
+          <StarMark className="h-7 w-auto text-ink" />
+          <span className="font-display text-lg font-semibold uppercase tracking-[0.08em] text-ink">
+            {COMPANY.name}
+          </span>
+        </Link>
+
+        <nav aria-label="Main" className="hidden items-center gap-7 text-sm font-medium md:flex">
+          {NAV_LINKS.map((link) => {
+            const active = pathname === link.href;
+            return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`rounded-lg px-3 py-2 transition hover:bg-accent/10 hover:text-accent ${
-                  pathname === link.href ? "text-primary" : ""
+                aria-current={active ? "page" : undefined}
+                className={`rounded-sm py-1 transition-colors duration-fast ease-standard hover:text-link focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-focus-ring ${
+                  active
+                    ? "text-ink underline decoration-link decoration-2 underline-offset-8"
+                    : "text-ink-muted"
                 }`}
-                onClick={() => setOpen(false)}
               >
                 {link.label}
               </Link>
-            ))}
-            <Link
-              href="/request-service"
-              className="btn-primary w-full justify-center"
-              onClick={() => setOpen(false)}
-            >
-              Request a Proposal
-            </Link>
-          </div>
-        </div>
-      )}
+            );
+          })}
+          <Link href="/request-service" className="btn-primary !min-h-10 px-4 text-xs">
+            Request a Proposal
+          </Link>
+        </nav>
+
+        <button
+          type="button"
+          className="inline-flex h-11 w-11 items-center justify-center rounded border border-border text-ink transition-colors duration-fast ease-standard hover:border-border-strong hover:bg-canvas-subtle focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring md:hidden"
+          onClick={() => setOpen((prev) => !prev)}
+          aria-label={open ? "Close navigation" : "Open navigation"}
+          aria-expanded={open}
+          aria-controls="mobile-nav"
+        >
+          {open ? <X className="h-5 w-5" aria-hidden /> : <Menu className="h-5 w-5" aria-hidden />}
+        </button>
+      </div>
+
+      <AnimatePresence>
+        {open && (
+          <motion.nav
+            id="mobile-nav"
+            aria-label="Main"
+            className="overflow-hidden border-t border-border bg-canvas md:hidden"
+            initial={reducedMotion ? false : { height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={reducedMotion ? undefined : { height: 0, opacity: 0 }}
+            transition={{ duration: 0.26, ease: [0.2, 0, 0, 1] }}
+          >
+            <div className="container flex flex-col gap-1 py-4 text-sm font-medium">
+              {NAV_LINKS.map((link) => {
+                const active = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    aria-current={active ? "page" : undefined}
+                    className={`rounded px-3 py-3 transition-colors duration-fast ease-standard hover:bg-canvas-subtle hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-focus-ring ${
+                      active ? "bg-canvas-subtle text-ink" : "text-ink-muted"
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+              <Link
+                href="/request-service"
+                className="btn-primary mt-2 w-full justify-center"
+                onClick={() => setOpen(false)}
+              >
+                Request a Proposal
+              </Link>
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
