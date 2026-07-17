@@ -1,0 +1,74 @@
+# Yoranix — full site content map
+
+> Yoranix is a digital solutions company based in Sydney, Australia, serving clients
+> globally. Tagline: "Digital Solutions. Real Impact." Descriptor: end-to-end digital
+> solutions for education and enterprises.
+
+## What Yoranix does
+
+Yoranix delivers complete digital infrastructure for learning and business — from
+Moodle LMS deployments to cloud-native DevOps — as secure, scalable platforms with
+managed support. Services are modular and can be combined into a tailored managed
+service.
+
+### 1. Complete Moodle Solution
+Setup, theme, plugins, integrations, and training for seamless learning experiences.
+Includes: implementation and theming; plugin governance, management, and performance
+tuning; user training, documentation, onboarding, and adoption.
+
+### 2. Server Hosting & Maintenance
+VPS, backups, security hardening, and proactive monitoring to keep you online.
+Includes: VPS/cloud hosting with redundancy; performance tuning; uptime monitoring
+and patch management; regular security audits and backups; disaster recovery.
+
+### 3. Cloud Infrastructure & DevOps
+CI/CD pipelines, container orchestration, and auto-scaling tailored to your
+workloads. Includes: Kubernetes and Docker; automation pipelines tuned to your
+stack; infrastructure-as-code; observability, alerting, logging, and metrics.
+
+### 4. Custom Integrations & Automation
+APIs, SIS/CRM integrations, and automated reporting to streamline operations.
+Includes: CRM and SIS connectors; reporting automation; single sign-on.
+
+### Managed Support & Training
+Ongoing support plans with SLAs; onboarding sessions and enablement; custom
+workshops for teams and leaders.
+
+## Why Yoranix
+
+- End-to-end support: from planning to launch and ongoing care.
+- Education-first expertise: specialists in LMS, digital learning, and integrations.
+- Secure and scalable infrastructure: hardened environments, best-practice backups,
+  observability baked in.
+- Transparent reporting and monitoring: clear metrics, weekly updates, shared
+  dashboards.
+
+## Who Yoranix serves
+
+- Colleges and training providers: robust LMS deployments, multi-campus support,
+  accessible learning journeys.
+- Enterprises and SMEs: secure hosting, compliance-ready architectures, integration
+  with business apps.
+- EdTech startups: cloud-native builds, rapid prototyping, observability.
+
+## How engagement works
+
+Request a service proposal or book a meeting via the website. Yoranix responds
+within one business day, holds a discovery call to align on outcomes and timelines,
+then provides a clear proposal with milestones, SLAs, and pricing.
+
+## Pages
+
+- Home (/) — overview, services, testimonials, FAQ
+- Services (/services) — all four core services and delivery detail
+- FAQ (/faq) — common questions answered plainly
+- Request a Service (/request-service) — proposal request form
+- Book a Meeting (/book-meeting) — Google Calendar scheduling
+- Contact (/contact) — contact form and details
+- Privacy (/privacy) — privacy notice
+
+## Contact
+
+Location: Sydney, Australia (serving clients globally).
+Address: 123 Market Street, Sydney, Australia.
+See the Contact page for email and phone.

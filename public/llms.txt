@@ -1,0 +1,29 @@
+# Yoranix
+
+> Yoranix is a digital solutions company based in Sydney, Australia, serving clients
+> globally. Tagline: "Digital Solutions. Real Impact." It delivers end-to-end digital
+> solutions for education providers and enterprises: complete Moodle LMS solutions,
+> server hosting and maintenance, cloud infrastructure and DevOps, and custom
+> integrations and automation — as modular offerings or one managed service.
+
+## Services
+
+- [Services overview](/services): Complete Moodle Solution (setup, theming, plugins,
+  training); Server Hosting & Maintenance (VPS, backups, security hardening,
+  monitoring); Cloud Infrastructure & DevOps (CI/CD, Kubernetes/Docker,
+  observability); Custom Integrations & Automation (APIs, SIS/CRM connectors, SSO,
+  automated reporting).
+
+## Key pages
+
+- [Home](/): What Yoranix does, who it serves, client testimonials, and FAQs.
+- [FAQ](/faq): Plain answers on Moodle hosting, cloud/DevOps scope, integrations,
+  industries served, location, support, and how to get started.
+- [Request a Service](/request-service): Proposal request form; response within one
+  business day with milestones, SLAs, and pricing.
+- [Book a Meeting](/book-meeting): Consultation scheduling via Google Calendar.
+- [Contact](/contact): Email, phone, and location details.
+
+## Who Yoranix serves
+
+Colleges and training providers; enterprises and SMEs; edtech startups.
