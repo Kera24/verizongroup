@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { StarSpark } from "@/components/brand/StarMark";
 
 interface ContactFormState {
   name: string;
@@ -35,52 +36,52 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid gap-4 md:grid-cols-2">
-        <label className="space-y-2 text-sm font-medium text-primary">
+        <label className="field-label">
           Name
           <input
             required
             value={form.name}
             onChange={(e) => handleChange("name", e.target.value)}
-            className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+            className="field"
           />
         </label>
-        <label className="space-y-2 text-sm font-medium text-primary">
+        <label className="field-label">
           Work Email
           <input
             type="email"
             required
             value={form.email}
             onChange={(e) => handleChange("email", e.target.value)}
-            className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+            className="field"
           />
         </label>
-        <label className="space-y-2 text-sm font-medium text-primary">
+        <label className="field-label">
           Organisation / Institution
           <input
             required
             value={form.organisation}
             onChange={(e) => handleChange("organisation", e.target.value)}
-            className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+            className="field"
           />
         </label>
-        <label className="space-y-2 text-sm font-medium text-primary">
+        <label className="field-label">
           Subject
           <input
             required
             value={form.subject}
             onChange={(e) => handleChange("subject", e.target.value)}
-            className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+            className="field"
           />
         </label>
       </div>
-      <label className="space-y-2 text-sm font-medium text-primary">
+      <label className="field-label">
         Message
         <textarea
           required
           rows={4}
           value={form.message}
           onChange={(e) => handleChange("message", e.target.value)}
-          className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+          className="field"
         />
       </label>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -88,10 +89,18 @@ export function ContactForm() {
           type="submit"
           className="btn-primary w-full sm:w-auto"
           disabled={status === "submitting"}
+          aria-busy={status === "submitting"}
         >
+          {status === "submitting" && (
+            <StarSpark className="aperture-loader h-3.5 w-3.5" aria-hidden />
+          )}
           {status === "submitting" ? "Sending..." : "Send message"}
         </button>
-        {status === "success" && <p className="text-sm font-semibold text-emerald-600">Thanks! We will be in touch shortly.</p>}
+        {status === "success" && (
+          <p role="status" className="text-sm font-semibold text-success">
+            Thanks! We will be in touch shortly.
+          </p>
+        )}
       </div>
     </form>
   );

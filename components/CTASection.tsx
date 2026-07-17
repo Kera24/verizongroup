@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { StarSpark } from "@/components/brand/StarMark";
 
 interface CTASectionProps {
   title: string;
@@ -7,23 +8,49 @@ interface CTASectionProps {
   secondaryCta?: { label: string; href: string };
 }
 
+const CTA_STARS = [
+  [6, 22, 0.5], [16, 74, 0.3], [30, 38, 0.45], [46, 82, 0.35], [58, 18, 0.5],
+  [72, 62, 0.3], [84, 30, 0.45], [94, 76, 0.4], [90, 12, 0.3], [38, 12, 0.35],
+] as const;
+
 export function CTASection({ title, description, primaryCta, secondaryCta }: CTASectionProps) {
   return (
-    <section className="section bg-primary">
-      <div className="container flex flex-col gap-6 rounded-3xl bg-gradient-to-r from-primary via-primary to-[#0b1220] px-8 py-12 text-white shadow-soft md:flex-row md:items-center md:justify-between">
-        <div className="space-y-3 md:max-w-xl">
-          <h3 className="text-2xl font-semibold md:text-3xl">{title}</h3>
-          <p className="text-sm text-slate-200 md:text-base">{description}</p>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <Link href={primaryCta.href} className="btn-primary bg-white text-primary hover:bg-slate-50">
-            {primaryCta.label}
-          </Link>
-          {secondaryCta && (
-            <Link href={secondaryCta.href} className="btn-secondary border-white/30 bg-transparent text-white hover:border-white">
-              {secondaryCta.label}
-            </Link>
-          )}
+    <section className="section">
+      <div className="container">
+        <div className="relative overflow-hidden rounded-hero bg-inverse-surface px-7 py-14 text-inverse shadow-elevation-4 md:px-14 md:py-16">
+          <svg
+            aria-hidden
+            className="absolute inset-0 h-full w-full"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="xMidYMid slice"
+          >
+            {CTA_STARS.map(([x, y, o], i) => (
+              <path
+                key={i}
+                d="M0 -1.4 Q 0 0 1.4 0 Q 0 0 0 1.4 Q 0 0 -1.4 0 Q 0 0 0 -1.4 Z"
+                transform={`translate(${x} ${y}) scale(${0.5 + o})`}
+                fill="rgb(168 184 214)"
+                opacity={o * 0.5}
+              />
+            ))}
+          </svg>
+          <div className="relative flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+            <div className="space-y-4 md:max-w-xl">
+              <StarSpark className="h-4 w-4 text-steel-300" aria-hidden />
+              <h2 className="text-h2 text-inverse">{title}</h2>
+              <p className="max-w-measure text-base leading-relaxed text-inverse-muted">{description}</p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <Link href={primaryCta.href} className="btn-inverse">
+                {primaryCta.label}
+              </Link>
+              {secondaryCta && (
+                <Link href={secondaryCta.href} className="btn-outline-inverse">
+                  {secondaryCta.label}
+                </Link>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </section>
