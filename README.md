@@ -1,30 +1,14 @@
-# Verizon Group Marketing Site
+# Yoranix Marketing Site
 
-A modern Next.js 14 + TypeScript + Tailwind CSS marketing site for **Verizon Group** with routes for services, contact, service requests, and booking meetings.
-
-## Getting Started
-
-Install dependencies and start the dev server:
-
-```bash
-npm install
-npm run dev
-```
-
-Visit `http://localhost:3000` to view the site.
-
-## Features
-- App Router with pages for Home, Services, Contact, Request Service, and Book Meeting.
-- Responsive UI with Tailwind CSS, reusable components, and Google Font (Inter).
-- Service request API endpoint stub (`/api/request-service`) that logs submissions.
-- Configurable Google Calendar booking URL via `NEXT_PUBLIC_GOOGLE_CALENDAR_BOOKING_URL`.
-A Next.js 14 (App Router) website for Verizon Group, showcasing managed Moodle, hosting, and cloud services.
+A Next.js 14 (App Router) + TypeScript + Tailwind CSS marketing site for **Yoranix**
+("Digital Solutions. Real Impact.") — managed Moodle, hosting, cloud infrastructure,
+and integration services for education and enterprise teams.
 
 ## Tech Stack
-- Next.js 14 with App Router
-- TypeScript
-- Tailwind CSS
-- Framer Motion & Heroicons
+- Next.js 14 (App Router), fully server-rendered content
+- TypeScript, Tailwind CSS (semantic OKLCH-derived token system — see `DESIGN.md`)
+- lucide-react icons, framer-motion (UI transitions)
+- lenis (smooth scroll) + gsap/@gsap/react (hero signature only, lazy-loaded)
 
 ## Getting Started
 1. Install dependencies:
@@ -38,7 +22,15 @@ A Next.js 14 (App Router) website for Verizon Group, showcasing managed Moodle, 
 3. Open http://localhost:3000 to view the site.
 
 ## Environment Variables
-- `NEXT_PUBLIC_GOOGLE_CALENDAR_BOOKING_URL` (optional): Google Calendar booking/appointments link used on the Book Meeting page.
+- `NEXT_PUBLIC_SITE_URL` (optional): canonical site origin used for metadata,
+  sitemap, robots, and JSON-LD. Defaults to `https://yoranix.com`.
+- `NEXT_PUBLIC_GOOGLE_CALENDAR_BOOKING_URL` (optional): Google Calendar
+  booking/appointments link used on the Book Meeting page.
+
+## AEO / SEO
+Answer-first copy, JSON-LD (Organization, WebSite, Service, FAQPage,
+BreadcrumbList), `app/sitemap.ts`, `app/robots.ts` (AI crawlers explicitly
+allowed), and `public/llms.txt` / `public/llms-full.txt`. See `SEO.md`.
 
 ## Available Scripts
 - `npm run dev` – start the development server

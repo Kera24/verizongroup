@@ -2,7 +2,7 @@
 
 Baseline note: no browser tooling was available in this session, so baseline
 screenshots were not captured; the pre-rebrand state is preserved as the initial
-git commit ("Baseline: Verizon Group site before Yoranix rebrand").
+git commit ("Baseline … site before Yoranix rebrand").
 
 ## Stages (one commit each)
 - [ ] 1. Tokens + fonts (tailwind.config.ts, globals.css vars, layout fonts)
