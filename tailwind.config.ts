@@ -1,10 +1,10 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Yoranix design tokens.
- * Colour values are RGB triplets defined as CSS custom properties in
- * app/globals.css (generated as OKLCH ramps from the brand anchors) so
- * utilities keep <alpha-value> support. No raw hex in components.
+ * Yoranix — instrument-grade tokens (§2–§4).
+ * Colour values live as RGB triplets in app/globals.css so utilities keep
+ * <alpha-value> support. Hairlines carry baked-in alpha and are exposed as
+ * plain CSS colours. No raw hex in components.
  */
 const token = (name: string) => `rgb(var(--${name}) / <alpha-value>)`;
 
@@ -17,118 +17,69 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        canvas: token("canvas"),
-        "canvas-subtle": token("canvas-subtle"),
+        ink: { DEFAULT: token("ink"), deep: token("ink-deep") },
+        steel: token("steel"),
+        grey: token("grey"),
+        canvas: { DEFAULT: token("canvas"), sunk: token("canvas-sunk") },
         surface: token("surface"),
-        "surface-raised": token("surface-raised"),
-        overlay: token("overlay"),
-        ink: {
-          DEFAULT: token("text-primary"),
-          secondary: token("text-secondary"),
-          muted: token("text-muted"),
+        hairline: {
+          DEFAULT: "var(--hairline)",
+          firm: "var(--hairline-firm)",
+          inverse: "var(--hairline-inverse)",
+          "inverse-firm": "var(--hairline-inverse-firm)",
         },
-        border: {
-          DEFAULT: token("border"),
-          strong: token("border-strong"),
-        },
-        primary: {
-          DEFAULT: token("primary"),
-          hover: token("primary-hover"),
-          active: token("primary-active"),
-        },
-        secondary: token("secondary"),
-        "focus-ring": token("focus-ring"),
-        link: token("link"),
-        info: token("info"),
         success: token("success"),
         warning: token("warning"),
         destructive: token("destructive"),
-        selection: token("selection"),
+        disabled: { DEFAULT: token("disabled"), text: token("disabled-text") },
         skeleton: token("skeleton"),
-        disabled: {
-          DEFAULT: token("disabled"),
-          text: token("disabled-text"),
-        },
-        inverse: {
-          DEFAULT: token("inverse"),
-          muted: token("inverse-muted"),
-          surface: token("inverse-surface"),
-          border: token("inverse-border"),
-        },
-        chart: {
-          1: token("chart-1"),
-          2: token("chart-2"),
-          3: token("chart-3"),
-          4: token("chart-4"),
-          5: token("chart-5"),
-          6: token("chart-6"),
-        },
-        navy: {
-          50: token("navy-50"),
-          100: token("navy-100"),
-          200: token("navy-200"),
-          300: token("navy-300"),
-          400: token("navy-400"),
-          500: token("navy-500"),
-          600: token("navy-600"),
-          700: token("navy-700"),
-          800: token("navy-800"),
-          900: token("navy-900"),
-          950: token("navy-950"),
-        },
-        steel: {
-          100: token("steel-100"),
-          300: token("steel-300"),
-          500: token("steel-500"),
-          600: token("steel-600"),
-          700: token("steel-700"),
-        },
+        "inverse-muted": token("inverse-muted"),
+        overlay: token("overlay"),
       },
+      /* §4 — 2px inputs/buttons, 4px cards, 0 for bands. No pills. */
       borderRadius: {
         none: "0",
-        sm: "4px",
-        DEFAULT: "8px",
-        lg: "12px",
-        hero: "20px", // reserved for the hero signature surface
+        sm: "2px",
+        DEFAULT: "4px",
       },
+      /* §4 — depth comes from hairlines, not shadow. */
       boxShadow: {
-        "elevation-1": "0 1px 2px rgb(var(--navy-950) / 0.05), 0 1px 1px rgb(var(--navy-950) / 0.03)",
-        "elevation-2":
-          "0 1px 2px rgb(var(--navy-950) / 0.05), 0 3px 8px -2px rgb(var(--navy-950) / 0.07)",
-        "elevation-3":
-          "0 2px 4px rgb(var(--navy-950) / 0.05), 0 10px 24px -6px rgb(var(--navy-950) / 0.10)",
-        "elevation-4":
-          "0 4px 8px rgb(var(--navy-950) / 0.06), 0 24px 48px -12px rgb(var(--navy-950) / 0.14)",
+        none: "none",
       },
       fontFamily: {
         display: ["var(--font-display)", "system-ui", "sans-serif"],
         sans: ["var(--font-sans)", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
         mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
       },
+      /* §3 — the shipped scale. */
       fontSize: {
-        // Fluid editorial scale
-        display: [
-          "clamp(2.5rem, 1.55rem + 4.75vw, 4.75rem)",
-          { lineHeight: "1.04", letterSpacing: "-0.02em" },
+        "display-xl": [
+          "clamp(3.25rem, 9vw, 9.25rem)",
+          { lineHeight: "0.92", letterSpacing: "-0.035em", fontWeight: "600" },
         ],
-        h1: ["clamp(2.125rem, 1.5rem + 3.1vw, 3.5rem)", { lineHeight: "1.08", letterSpacing: "-0.015em" }],
-        h2: ["clamp(1.625rem, 1.3rem + 1.65vw, 2.375rem)", { lineHeight: "1.15", letterSpacing: "-0.01em" }],
-        h3: ["clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem)", { lineHeight: "1.3" }],
-        h4: ["1.125rem", { lineHeight: "1.4" }],
+        "display-l": [
+          "clamp(2.5rem, 5.5vw, 5.25rem)",
+          { lineHeight: "0.98", letterSpacing: "-0.028em", fontWeight: "600" },
+        ],
+        h2: ["clamp(1.75rem, 3.2vw, 3rem)", { lineHeight: "1.08", letterSpacing: "-0.02em", fontWeight: "600" }],
+        h3: ["1.5rem", { lineHeight: "1.25", fontWeight: "500" }],
+        "body-l": ["1.125rem", { lineHeight: "1.6" }],
+        body: ["1rem", { lineHeight: "1.65" }],
+        slug: ["0.75rem", { lineHeight: "1.4" }],
       },
       maxWidth: {
         measure: "68ch",
       },
       transitionDuration: {
-        fast: "120ms",
-        base: "180ms",
-        slow: "260ms",
-        slower: "380ms",
+        micro: "140ms",
+        state: "200ms",
+        layout: "320ms",
+        reveal: "560ms",
       },
       transitionTimingFunction: {
-        standard: "cubic-bezier(0.2, 0, 0, 1)",
-        enter: "cubic-bezier(0, 0, 0.2, 1)",
-        exit: "cubic-bezier(0.4, 0, 1, 1)",
+        entrance: "cubic-bezier(0.16, 1, 0.3, 1)",
+        layout: "cubic-bezier(0.65, 0, 0.35, 1)",
+        micro: "cubic-bezier(0.2, 0, 0, 1)",
       },
     },
   },
