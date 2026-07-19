@@ -7,8 +7,9 @@ and integration services for education and enterprise teams.
 ## Tech Stack
 - Next.js 14 (App Router), fully server-rendered content
 - TypeScript, Tailwind CSS (semantic OKLCH-derived token system — see `DESIGN.md`)
-- lucide-react icons, framer-motion (UI transitions)
+- lucide-react icons
 - lenis (smooth scroll) + gsap/@gsap/react (hero signature only, lazy-loaded)
+- Section reveals: native `IntersectionObserver` + CSS transitions (no animation library)
 
 ## Getting Started
 1. Install dependencies:
