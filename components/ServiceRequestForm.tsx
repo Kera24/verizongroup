@@ -144,7 +144,7 @@ export function ServiceRequestForm() {
           aria-busy={status === "submitting"}
         >
           {status === "submitting" && (
-            <StarSpark className="aperture-loader h-3.5 w-3.5" aria-hidden />
+            <StarSpark className="star-loader h-3.5 w-3.5" aria-hidden />
           )}
           {status === "submitting" ? "Submitting..." : "Submit request"}
         </button>

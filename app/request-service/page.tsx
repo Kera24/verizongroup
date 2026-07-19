@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { SectionHeader } from "@/components/SectionHeader";
+import { PageHeader } from "@/components/PageHeader";
 import { ServiceRequestForm } from "@/components/ServiceRequestForm";
+import { Slug } from "@/components/Slug";
 import { StarSpark } from "@/components/brand/StarMark";
 import { COMPANY } from "@/lib/config";
 import { buildMetadata } from "@/lib/seo";
@@ -22,49 +22,55 @@ const EXPECTATIONS = [
 
 export default function RequestServicePage() {
   return (
-    <section className="section">
-      <div className="container space-y-10">
-        <Breadcrumbs
-          trail={[{ label: "Home", href: "/" }, { label: "Request Service", href: "/request-service" }]}
-        />
-        <SectionHeader
-          eyebrow="Proposal request"
-          title="Request a service proposal"
-          description="Share your requirements and we will prepare a customised plan for your team."
-        />
-        <div className="grid gap-5 lg:grid-cols-12">
-          <div className="reveal lg:col-span-8">
-            <div className="card md:p-8">
+    <>
+      <PageHeader
+        trail={[
+          { label: "home", href: "/" },
+          { label: "start a project", href: "/request-service" },
+        ]}
+        title="Start a project."
+        capsule="Share your requirements and we will prepare a customised plan for your team — a clear proposal with milestones, SLAs, and pricing."
+      />
+
+      <section className="section">
+        <div className="container grid gap-x-6 gap-y-12 md:grid-cols-12">
+          <div className="md:col-span-7" data-reveal>
+            <div className="border border-hairline p-6 md:p-10">
               <h2 className="sr-only">Service request form</h2>
               <ServiceRequestForm />
             </div>
           </div>
-          <div className="reveal lg:col-span-4">
-            <div className="flex h-full flex-col gap-6 rounded-lg bg-inverse-surface p-7 text-inverse shadow-elevation-2">
-              <h2 className="text-h4 font-semibold text-inverse">What to expect</h2>
-              <ul className="space-y-4 text-sm leading-relaxed text-inverse-muted">
-                {EXPECTATIONS.map((item) => (
-                  <li key={item} className="flex items-start gap-2.5">
-                    <StarSpark className="mt-1 h-3 w-3 shrink-0 text-steel-300" aria-hidden />
-                    <span>{item}</span>
+
+          <div className="md:col-span-4 md:col-start-9" data-reveal>
+            <div className="flex h-full flex-col gap-10 bg-ink p-8 md:p-10">
+              <Slug tone="inverse">what to expect</Slug>
+              <ul className="space-y-6">
+                {EXPECTATIONS.map((item, i) => (
+                  <li key={item} className="flex items-start gap-4">
+                    <span className="slug-inverse tabular pt-0.5" aria-hidden>
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-sm leading-relaxed text-canvas">{item}</span>
                   </li>
                 ))}
               </ul>
-              <div className="mt-auto rounded border border-inverse-border/20 bg-inverse/5 p-5 text-sm">
-                <p className="font-semibold text-inverse">Need to talk now?</p>
-                <p className="mt-1.5 text-inverse-muted">Book a meeting and we will confirm a slot.</p>
-                <Link
-                  href="/book-meeting"
-                  className="mt-3 inline-flex items-center gap-1.5 rounded-sm font-semibold text-steel-300 underline decoration-steel-300/40 underline-offset-4 transition-colors duration-fast ease-standard hover:text-inverse hover:decoration-inverse focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-steel-300"
-                >
-                  Book a Meeting
+              <div className="mt-auto border-t border-hairline-inverse pt-8">
+                <p className="flex items-center gap-2.5 text-sm font-medium text-canvas">
+                  <StarSpark className="h-2.5 w-2.5 text-inverse-muted" aria-hidden />
+                  Need to talk now?
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-inverse-muted">
+                  Book a meeting and we will confirm a slot with the right specialists.
+                </p>
+                <Link href="/book-meeting" className="link-quiet-inverse mt-5">
+                  Book a meeting
                   <ArrowRight className="h-4 w-4" aria-hidden />
                 </Link>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { CTASection } from "@/components/CTASection";
 import { JsonLd } from "@/components/JsonLd";
-import { SectionHeader } from "@/components/SectionHeader";
-import { ServiceCard } from "@/components/ServiceCard";
+import { PageHeader } from "@/components/PageHeader";
+import { Slug } from "@/components/Slug";
 import { StarSpark } from "@/components/brand/StarMark";
 import { COMPANY, SERVICE_CATEGORIES, SERVICES, SITE_URL } from "@/lib/config";
 import { buildMetadata } from "@/lib/seo";
@@ -21,85 +20,99 @@ const servicesSchema = SERVICES.map((service) => ({
   description: service.description,
   provider: { "@type": "Organization", name: COMPANY.name, url: SITE_URL },
   areaServed: "Worldwide",
-  url: `${SITE_URL}/services`,
+  url: `${SITE_URL}/services#${service.slug}`,
 }));
+
+/** Deeper execution detail where the titles line up (real content, §1). */
+const detailFor = (title: string) =>
+  SERVICE_CATEGORIES.find((category) => category.title === title)?.items;
+
+const SUPPORT_CATEGORY = SERVICE_CATEGORIES[3];
 
 export default function ServicesPage() {
   return (
     <>
-      <section className="border-b border-border bg-canvas-subtle">
-        <div className="container space-y-6 py-14 md:py-20">
-          <Breadcrumbs trail={[{ label: "Home", href: "/" }, { label: "Services", href: "/services" }]} />
-          <p className="eyebrow">
-            <StarSpark className="h-3 w-3 text-link" aria-hidden />
-            Our services
-          </p>
-          <h1 className="max-w-3xl text-h1">Partner-level services without the overhead.</h1>
-          {/* Answer capsule */}
-          <p className="max-w-measure text-lg leading-relaxed text-ink-muted">
-            {COMPANY.name} provides four core services: complete Moodle LMS solutions, server hosting and
-            maintenance, cloud infrastructure and DevOps, and custom integrations and automation. Engage a
-            single service or combine them into one managed solution.
-          </p>
-        </div>
-      </section>
+      <PageHeader
+        trail={[
+          { label: "home", href: "/" },
+          { label: "services", href: "/services" },
+        ]}
+        title="Four services. One accountable partner."
+        capsule={`${COMPANY.name} provides four core services — complete Moodle LMS solutions, server hosting and maintenance, cloud infrastructure and DevOps, and custom integrations and automation. Engage one, or combine them into a single managed solution.`}
+      />
 
-      <section className="section">
-        <div className="container space-y-12">
-          <div className="reveal">
-            <SectionHeader
-              eyebrow="Core capabilities"
-              title="Choose a single service or combine them"
-              description="Each offering stands alone or slots into a comprehensive managed solution."
-            />
-          </div>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {SERVICES.map((service) => (
-              <div key={service.title} className="reveal">
-                <ServiceCard {...service} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section bg-canvas-subtle">
-        <div className="container space-y-12">
-          <div className="reveal">
-            <SectionHeader
-              eyebrow="How we execute"
-              title="Service categories in detail"
-              description="Deeper detail on how we execute, govern, and support each engagement."
-            />
-          </div>
-          <div className="grid gap-x-10 gap-y-10 md:grid-cols-2">
-            {SERVICE_CATEGORIES.map((category, index) => (
-              <div key={category.title} className="reveal border-t-2 border-primary pt-6">
-                <div className="flex items-baseline justify-between gap-4">
-                  <h3 className="text-h4 font-semibold">{category.title}</h3>
-                  <span className="tabular font-mono text-sm text-ink-muted" aria-hidden>
+      {/* The index in full: one editorial block per service */}
+      <div>
+        {SERVICES.map((service, index) => {
+          const items = detailFor(service.title) ?? service.items ?? [];
+          return (
+            <section
+              key={service.slug}
+              id={service.slug}
+              aria-labelledby={`${service.slug}-title`}
+              className="scroll-mt-20 border-b border-hairline"
+            >
+              <div className="container grid gap-x-6 gap-y-9 py-16 md:grid-cols-12 md:py-24">
+                <div className="flex items-start gap-6 md:col-span-4" data-reveal>
+                  <span className="slug tabular pt-2.5" aria-hidden>
                     {String(index + 1).padStart(2, "0")}
                   </span>
+                  <h2 id={`${service.slug}-title`} className="max-w-[13ch] text-h2">
+                    {service.title}
+                  </h2>
                 </div>
-                <ul className="mt-4 space-y-3 text-base text-ink-secondary">
-                  {category.items.map((item) => (
-                    <li key={item} className="flex items-start gap-2.5">
-                      <StarSpark className="mt-1.5 h-2.5 w-2.5 shrink-0 text-link" aria-hidden />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
+                <div className="space-y-8 md:col-span-7 md:col-start-6" data-reveal>
+                  <p className="max-w-[52ch] text-body-l text-grey">{service.description}</p>
+                  <ul className="border-t border-hairline">
+                    {items.map((item) => (
+                      <li
+                        key={item}
+                        className="flex items-center gap-4 border-b border-hairline py-4 text-body text-ink"
+                      >
+                        <StarSpark className="h-2.5 w-2.5 shrink-0 text-steel" aria-hidden />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-            ))}
+            </section>
+          );
+        })}
+
+        {/* Managed support & training — real category content (§1) */}
+        <section
+          id="support"
+          aria-labelledby="support-title"
+          className="scroll-mt-20 border-b border-hairline bg-canvas-sunk"
+        >
+          <div className="container grid gap-x-6 gap-y-9 py-16 md:grid-cols-12 md:py-24">
+            <div className="space-y-7 md:col-span-4" data-reveal>
+              <Slug>ongoing / every engagement</Slug>
+              <h2 id="support-title" className="max-w-[13ch] text-h2">
+                {SUPPORT_CATEGORY.title}
+              </h2>
+            </div>
+            <div className="md:col-span-7 md:col-start-6" data-reveal>
+              <ul className="border-t border-hairline">
+                {SUPPORT_CATEGORY.items.map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-center gap-4 border-b border-hairline py-4 text-body text-ink"
+                  >
+                    <StarSpark className="h-2.5 w-2.5 shrink-0 text-steel" aria-hidden />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       <CTASection
         title="Not sure where to start?"
-        description="Book a consultation or send us your requirements and we will design the right package for you."
-        primaryCta={{ label: "Book a Meeting", href: "/book-meeting" }}
-        secondaryCta={{ label: "Request Service", href: "/request-service" }}
+        description="Send us your requirements or book a meeting — we will recommend the right package and respond within one business day."
       />
 
       {servicesSchema.map((schema) => (
