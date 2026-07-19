@@ -29,7 +29,7 @@ git commit ("Baseline … site before Yoranix rebrand").
 - [x] Organization + WebSite + Service + FAQPage + BreadcrumbList JSON-LD; no Review
 - [x] Full prefers-reduced-motion path
 - [x] All routes reskinned; only lenis + gsap/@gsap/react added (lazy)
-- [ ] Lighthouse: Perf ≥90, A11y ≥95, BP ≥95, SEO 100 (home + /services)
-      — not measurable in this session (no browser tooling); run against a
-      deployed build. Proxy signals are strong: 95.3 kB first-load JS, all
-      routes static, hero libs lazy, fonts self-hosted via next/font.
+- [x] Lighthouse: Perf ≥90, A11y ≥95, BP ≥95, SEO 100 (home + /services)
+      — measured via `npx lighthouse` (desktop preset) against a local
+      production build (`next start`). Home: Perf 100 / A11y 100 / BP 100 /
+      SEO 100. /services: Perf 100 / A11y 100 / BP 100 / SEO 100.
