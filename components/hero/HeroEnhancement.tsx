@@ -1,247 +1,83 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-
-gsap.registerPlugin(useGSAP);
-
-type Spark = {
-  x: number;
-  y: number;
-  depth: number; // 0.35–1, drives size, parallax and drift
-  size: number;
-  alpha: number;
-  phase: number; // twinkle offset
-  vx: number;
-  vy: number;
-};
+import { useEffect } from "react";
 
 /**
- * The hero signature: a drifting "north-star constellation" canvas field
- * with pointer parallax, plus a GSAP entrance that reveals the headline
- * through per-line masks and opens the aperture mark. Loaded lazily,
- * never under reduced motion; the server-rendered hero is the source of
- * truth for all content.
+ * §6 — the entrance sequence and pointer parallax. Loaded lazily
+ * (ssr:false, never in the initial bundle) and only when motion is
+ * allowed. Uses gsap.from throughout so the server-rendered state is
+ * the final state: crawlers, no-JS users, and reduced-motion users all
+ * see the finished frame. Everything reverts on unmount.
  */
 export default function HeroEnhancement() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  // --- Canvas constellation field ---
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const hero = canvas?.closest<HTMLElement>("[data-hero]");
-    if (!canvas || !hero) return;
+    let revertContext: { revert: () => void } | undefined;
+    let removeParallax: (() => void) | undefined;
+    let cancelled = false;
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    (async () => {
+      const { gsap } = await import("gsap");
+      if (cancelled) return;
 
-    let sparks: Spark[] = [];
-    let width = 0;
-    let height = 0;
-    let dpr = 1;
-    let raf = 0;
-    let running = false;
-    let visible = true;
-    let last = 0;
-    const pointer = { tx: 0, ty: 0, x: 0, y: 0 };
+      const hero = document.querySelector<HTMLElement>("[data-hero]");
+      if (!hero) return;
 
-    const seed = (w: number, h: number) => {
-      const count = Math.min(110, Math.round((w * h) / 14000));
-      sparks = Array.from({ length: count }, () => {
-        const depth = 0.35 + Math.random() * 0.65;
-        return {
-          x: Math.random() * w,
-          y: Math.random() * h,
-          depth,
-          size: (0.8 + Math.random() * 1.6) * depth,
-          alpha: (0.25 + Math.random() * 0.5) * depth,
-          phase: Math.random() * Math.PI * 2,
-          vx: (Math.random() - 0.5) * 4 * depth,
-          vy: (Math.random() - 0.5) * 3 * depth,
-        };
-      });
-    };
+      revertContext = gsap.context(() => {
+        const entrance = "expo.out"; // closest core ease to cubic-bezier(0.16,1,0.3,1)
+        const tl = gsap.timeline();
 
-    const resize = () => {
-      const rect = hero.getBoundingClientRect();
-      width = rect.width;
-      height = rect.height;
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.round(width * dpr);
-      canvas.height = Math.round(height * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      seed(width, height);
-    };
+        // 0ms — column hairlines draw downward
+        tl.from("[data-hero-rule]", { scaleY: 0, duration: 0.7, stagger: 0.04, ease: "expo.out" }, 0);
 
-    const drawSpark = (x: number, y: number, s: number, alpha: number) => {
-      ctx.beginPath();
-      ctx.moveTo(x, y - s);
-      ctx.quadraticCurveTo(x, y, x + s, y);
-      ctx.quadraticCurveTo(x, y, x, y + s);
-      ctx.quadraticCurveTo(x, y, x - s, y);
-      ctx.quadraticCurveTo(x, y, x, y - s);
-      ctx.fillStyle = `rgba(168, 184, 214, ${alpha})`;
-      ctx.fill();
-    };
-
-    const frame = (t: number) => {
-      raf = requestAnimationFrame(frame);
-      const dt = Math.min((t - last) / 1000, 0.05);
-      last = t;
-
-      pointer.x += (pointer.tx - pointer.x) * 0.06;
-      pointer.y += (pointer.ty - pointer.y) * 0.06;
-
-      ctx.clearRect(0, 0, width, height);
-      const time = t / 1000;
-      for (const s of sparks) {
-        s.x += s.vx * dt;
-        s.y += s.vy * dt;
-        if (s.x < -4) s.x = width + 4;
-        if (s.x > width + 4) s.x = -4;
-        if (s.y < -4) s.y = height + 4;
-        if (s.y > height + 4) s.y = -4;
-        const twinkle = 0.75 + 0.25 * Math.sin(time * 1.4 + s.phase);
-        drawSpark(
-          s.x + pointer.x * 16 * s.depth,
-          s.y + pointer.y * 10 * s.depth,
-          s.size,
-          s.alpha * twinkle,
+        // 180ms — headline lines rise from their clipped masks
+        tl.from(
+          "[data-hero-line]",
+          { yPercent: 110, duration: 0.9, stagger: 0.09, ease: entrance },
+          0.18,
         );
+
+        // 520ms — the bearing's stroke draws itself
+        const paths = Array.from(hero.querySelectorAll<SVGPathElement>("[data-bearing-path]"));
+        for (const path of paths) {
+          const length = path.getTotalLength();
+          gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+        }
+        tl.to(paths, { strokeDashoffset: 0, duration: 1.4, ease: "power2.inOut" }, 0.52);
+        tl.set(paths, { clearProps: "strokeDasharray,strokeDashoffset" });
+
+        // 700ms — sub-paragraph and actions fade + rise
+        tl.from(
+          "[data-hero-sub]",
+          { autoAlpha: 0, y: 16, duration: 0.6, stagger: 0.08, ease: entrance },
+          0.7,
+        );
+
+        // 760ms — corner micro-type
+        tl.from("[data-hero-corner]", { autoAlpha: 0, duration: 0.4, ease: "power1.out" }, 0.76);
+      }, hero);
+
+      // §5a — pointer parallax: max 12px, eased, fine pointers only.
+      if (window.matchMedia("(pointer: fine)").matches) {
+        const target = hero.querySelector<HTMLElement>("[data-hero-parallax]");
+        if (target) {
+          const toX = gsap.quickTo(target, "x", { duration: 0.9, ease: "power3.out" });
+          const toY = gsap.quickTo(target, "y", { duration: 0.9, ease: "power3.out" });
+          const onMove = (event: PointerEvent) => {
+            toX((event.clientX / window.innerWidth - 0.5) * 24);
+            toY((event.clientY / window.innerHeight - 0.5) * 24);
+          };
+          hero.addEventListener("pointermove", onMove, { passive: true });
+          removeParallax = () => hero.removeEventListener("pointermove", onMove);
+        }
       }
-    };
-
-    const start = () => {
-      if (running || !visible || document.hidden) return;
-      running = true;
-      last = performance.now();
-      raf = requestAnimationFrame(frame);
-    };
-    const stop = () => {
-      running = false;
-      cancelAnimationFrame(raf);
-    };
-
-    const onPointer = (e: PointerEvent) => {
-      const rect = hero.getBoundingClientRect();
-      pointer.tx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-      pointer.ty = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-    };
-    const onLeave = () => {
-      pointer.tx = 0;
-      pointer.ty = 0;
-    };
-    const onVisibility = () => (document.hidden ? stop() : start());
-
-    const ro = new ResizeObserver(resize);
-    ro.observe(hero);
-    const io = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting;
-      visible ? start() : stop();
-    });
-    io.observe(hero);
-
-    resize();
-    start();
-    hero.addEventListener("pointermove", onPointer);
-    hero.addEventListener("pointerleave", onLeave);
-    document.addEventListener("visibilitychange", onVisibility);
-
-    // The canvas replaces the static SSR star field while active.
-    const staticField = hero.querySelector<SVGElement>("[data-hero-stars]");
-    if (staticField) staticField.style.opacity = "0";
+    })();
 
     return () => {
-      stop();
-      ro.disconnect();
-      io.disconnect();
-      hero.removeEventListener("pointermove", onPointer);
-      hero.removeEventListener("pointerleave", onLeave);
-      document.removeEventListener("visibilitychange", onVisibility);
-      if (staticField) staticField.style.opacity = "";
+      cancelled = true;
+      removeParallax?.();
+      revertContext?.revert();
     };
   }, []);
 
-  // --- Entrance: aperture mark opens, headline lines reveal through masks ---
-  useGSAP(() => {
-    const hero = canvasRef.current?.closest<HTMLElement>("[data-hero]");
-    if (!hero) return;
-    const headline = hero.querySelector<HTMLElement>("[data-hero-headline]");
-    const items = hero.querySelectorAll<HTMLElement>("[data-hero-item]");
-    const mark = hero.querySelector<HTMLElement>("[data-hero-mark]");
-
-    let revert: (() => void) | undefined;
-
-    const run = async () => {
-      // Wait briefly for webfonts so line splitting matches final layout,
-      // but never long enough to hurt LCP (next/font preloads them anyway).
-      try {
-        await Promise.race([document.fonts.ready, new Promise((res) => setTimeout(res, 250))]);
-      } catch {
-        /* non-blocking */
-      }
-      if (!headline) return;
-
-      const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
-
-      try {
-        const { SplitText } = await import("gsap/SplitText");
-        gsap.registerPlugin(SplitText);
-        const split = SplitText.create(headline, { type: "lines", mask: "lines" });
-        revert = () => split.revert();
-        tl.from(split.lines, { yPercent: 110, duration: 0.7, stagger: 0.07 }, 0);
-      } catch {
-        // SplitText unavailable: plain fade keeps the moment intact.
-        tl.from(headline, { autoAlpha: 0, y: 24, duration: 0.6 }, 0);
-      }
-
-      tl.from(items, { autoAlpha: 0, y: 18, duration: 0.5, stagger: 0.07 }, 0.2);
-      if (mark) {
-        tl.from(
-          mark,
-          { autoAlpha: 0, scale: 0.82, rotate: -6, transformOrigin: "50% 50%", duration: 1.0, ease: "power3.out" },
-          0.2,
-        );
-      }
-      if (canvasRef.current) {
-        tl.from(canvasRef.current, { autoAlpha: 0, duration: 1.2, ease: "power2.out" }, 0);
-      }
-    };
-
-    run();
-
-    return () => {
-      revert?.();
-    };
-  });
-
-  // --- Gentle pointer parallax on the aperture mark ---
-  useGSAP(() => {
-    const hero = canvasRef.current?.closest<HTMLElement>("[data-hero]");
-    const mark = hero?.querySelector<HTMLElement>("[data-hero-mark]");
-    if (!hero || !mark) return;
-
-    const xTo = gsap.quickTo(mark, "x", { duration: 0.6, ease: "power3.out" });
-    const yTo = gsap.quickTo(mark, "y", { duration: 0.6, ease: "power3.out" });
-
-    const onMove = (e: PointerEvent) => {
-      const rect = hero.getBoundingClientRect();
-      xTo(((e.clientX - rect.left) / rect.width - 0.5) * -18);
-      yTo(((e.clientY - rect.top) / rect.height - 0.5) * -12);
-    };
-    const onLeave = () => {
-      xTo(0);
-      yTo(0);
-    };
-
-    hero.addEventListener("pointermove", onMove);
-    hero.addEventListener("pointerleave", onLeave);
-    return () => {
-      hero.removeEventListener("pointermove", onMove);
-      hero.removeEventListener("pointerleave", onLeave);
-    };
-  });
-
-  return <canvas ref={canvasRef} aria-hidden className="absolute inset-0 h-full w-full" />;
+  return null;
 }
