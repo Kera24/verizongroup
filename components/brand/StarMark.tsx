@@ -23,7 +23,8 @@ export function StarMark({ title, ...props }: SVGProps<SVGSVGElement> & { title?
 }
 
 /**
- * Small solid four-point sparkle (the wordmark tittle / list marker).
+ * Small solid four-point sparkle (§5b) — the marker for slugs, list
+ * bullets, the FAQ open indicator, and the loading spinner.
  */
 export function StarSpark({ title, ...props }: SVGProps<SVGSVGElement> & { title?: string }) {
   return (
@@ -37,6 +38,40 @@ export function StarSpark({ title, ...props }: SVGProps<SVGSVGElement> & { title
     >
       {title ? <title>{title}</title> : null}
       <path d={STAR_SPARK_PATH} />
+    </svg>
+  );
+}
+
+/**
+ * The bearing (§5a): the mark drawn as a hairline stroke, not filled.
+ * The body inherits currentColor; the top facet is picked out in steel
+ * via its own colour class. GSAP draws the strokes on entrance
+ * (data-bearing-path), then the wrapper rotates once per ~240s.
+ */
+export function BearingStar(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="-6 -6 132 144"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+      {...props}
+    >
+      <path
+        data-bearing-path
+        d={STAR_BODY_PATH}
+        stroke="currentColor"
+        strokeWidth={1}
+        vectorEffect="non-scaling-stroke"
+      />
+      <path
+        data-bearing-path
+        d={STAR_DIAMOND_PATH}
+        className="text-steel/60"
+        stroke="currentColor"
+        strokeWidth={1}
+        vectorEffect="non-scaling-stroke"
+      />
     </svg>
   );
 }

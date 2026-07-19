@@ -5,6 +5,7 @@ import { Hanken_Grotesk, JetBrains_Mono, Space_Grotesk } from "next/font/google"
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
+import { RevealInit } from "@/components/Reveal";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { COMPANY, SERVICES, SITE_URL } from "@/lib/config";
 import { buildMetadata } from "@/lib/seo";
@@ -71,7 +72,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded focus:bg-surface focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-ink focus:shadow-elevation-3"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-sm focus:border focus:border-hairline-firm focus:bg-surface focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-ink"
         >
           Skip to content
         </a>
@@ -79,6 +80,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <main id="main-content">{children}</main>
         <Footer />
         <SmoothScroll />
+        <RevealInit />
         <JsonLd data={organizationSchema} />
         <JsonLd data={webSiteSchema} />
       </body>

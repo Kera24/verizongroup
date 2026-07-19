@@ -5,6 +5,9 @@ export const COMPANY = {
   name: "Yoranix",
   tagline: "Digital Solutions. Real Impact.",
   descriptor: "End-to-end digital solutions for education and enterprises.",
+  /** The real positioning sentence — used verbatim as the answer capsule. */
+  positioning:
+    "We help small colleges, SMEs, and service-based organisations modernise with tailored LMS platforms, business automation, ICT consulting, and AI-powered solutions.",
   // TODO: replace with the real Yoranix inbox before launch
   email: "TODO_UPDATE_EMAIL@yoranix.com",
   phone: "+61-000-000-000",
@@ -15,15 +18,16 @@ export const COMPANY = {
 /** Canonical site origin; override per environment. */
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://yoranix.com";
 
+/** Top-bar links (§6). Contact renders as the framed action. */
 export const NAV_LINKS = [
-  { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
+  { label: "Approach", href: "/#approach" },
+  { label: "Work", href: "/#work" },
   { label: "FAQ", href: "/faq" },
-  { label: "Book Meeting", href: "/book-meeting" },
-  { label: "Contact", href: "/contact" },
 ];
 
 export type Service = {
+  slug: string;
   title: string;
   description: string;
   icon: LucideIcon;
@@ -32,28 +36,63 @@ export type Service = {
 
 export const SERVICES: Service[] = [
   {
+    slug: "moodle",
     title: "Complete Moodle Solution",
     description: "Setup, theme, plugins, integrations, and training for seamless learning experiences.",
     icon: GraduationCap,
     items: ["Implementation & theming", "Plugin governance", "Training & adoption"],
   },
   {
+    slug: "hosting",
     title: "Server Hosting & Maintenance",
     description: "VPS, backups, security hardening, and proactive monitoring to keep you online.",
     icon: Server,
     items: ["Performance tuning", "Uptime monitoring", "Disaster recovery"],
   },
   {
+    slug: "cloud",
     title: "Cloud Infrastructure & DevOps",
     description: "CI/CD pipelines, container orchestration, and auto-scaling tailored to your workloads.",
     icon: Cloud,
     items: ["Kubernetes & Docker", "Automation pipelines", "Logging & metrics"],
   },
   {
+    slug: "integrations",
     title: "Custom Integrations & Automation",
     description: "APIs, SIS/CRM integrations, and automated reporting to streamline operations.",
     icon: Layers,
     items: ["CRM & SIS connectors", "Reporting automation", "Single sign-on"],
+  },
+];
+
+/**
+ * The engagement process (§7.5). Every line is grounded in copy that
+ * already exists in FAQS and SERVICE_CATEGORIES — no invented claims.
+ */
+export const APPROACH_STEPS = [
+  {
+    slug: "discovery",
+    title: "Discovery",
+    description:
+      "We respond within one business day and hold a discovery call to align on outcomes and timelines.",
+  },
+  {
+    slug: "proposal",
+    title: "Proposal",
+    description:
+      "A clear proposal with milestones, SLAs, and pricing — a single service or a combined managed solution.",
+  },
+  {
+    slug: "build",
+    title: "Build & launch",
+    description:
+      "Setup, configuration, theming, and integrations, delivered on hardened, monitored infrastructure.",
+  },
+  {
+    slug: "support",
+    title: "Ongoing support",
+    description:
+      "Support plans with SLAs, transparent reporting, weekly updates, and shared dashboards.",
   },
 ];
 

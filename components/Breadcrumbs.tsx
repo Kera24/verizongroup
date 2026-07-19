@@ -5,8 +5,8 @@ import { SITE_URL } from "@/lib/config";
 export type Crumb = { label: string; href: string };
 
 /**
- * Visible breadcrumb trail + matching BreadcrumbList JSON-LD (schema always
- * mirrors visible content). Pass the full trail including the current page.
+ * Breadcrumb trail set in the slug voice (mono, lowercase) + matching
+ * BreadcrumbList JSON-LD — schema always mirrors visible content.
  */
 export function Breadcrumbs({ trail }: { trail: Crumb[] }) {
   const schema = {
@@ -21,25 +21,21 @@ export function Breadcrumbs({ trail }: { trail: Crumb[] }) {
   };
 
   return (
-    <nav aria-label="Breadcrumb" className="text-sm">
-      <ol className="flex flex-wrap items-center gap-2 text-ink-muted">
+    <nav aria-label="Breadcrumb" className="font-mono text-slug uppercase tracking-[0.16em]">
+      <ol className="flex flex-wrap items-center gap-2.5 text-grey">
         {trail.map((crumb, i) => {
           const current = i === trail.length - 1;
           return (
-            <li key={crumb.href} className="flex items-center gap-2">
-              {i > 0 && (
-                <span aria-hidden className="text-border-strong">
-                  /
-                </span>
-              )}
+            <li key={crumb.href} className="flex items-center gap-2.5">
+              {i > 0 && <span aria-hidden>/</span>}
               {current ? (
-                <span aria-current="page" className="font-medium text-ink">
+                <span aria-current="page" className="text-ink">
                   {crumb.label}
                 </span>
               ) : (
                 <Link
                   href={crumb.href}
-                  className="rounded-sm transition-colors duration-fast ease-standard hover:text-link focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-focus-ring"
+                  className="transition-colors duration-micro ease-micro hover:text-ink"
                 >
                   {crumb.label}
                 </Link>
