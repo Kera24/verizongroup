@@ -174,9 +174,10 @@ export default function HeroEnhancement() {
     let revert: (() => void) | undefined;
 
     const run = async () => {
-      // Wait for webfonts so line splitting matches final layout.
+      // Wait briefly for webfonts so line splitting matches final layout,
+      // but never long enough to hurt LCP (next/font preloads them anyway).
       try {
-        await document.fonts.ready;
+        await Promise.race([document.fonts.ready, new Promise((res) => setTimeout(res, 250))]);
       } catch {
         /* non-blocking */
       }
@@ -189,13 +190,13 @@ export default function HeroEnhancement() {
         gsap.registerPlugin(SplitText);
         const split = SplitText.create(headline, { type: "lines", mask: "lines" });
         revert = () => split.revert();
-        tl.from(split.lines, { yPercent: 110, duration: 0.9, stagger: 0.09 }, 0.1);
+        tl.from(split.lines, { yPercent: 110, duration: 0.7, stagger: 0.07 }, 0);
       } catch {
         // SplitText unavailable: plain fade keeps the moment intact.
-        tl.from(headline, { autoAlpha: 0, y: 24, duration: 0.7 }, 0.1);
+        tl.from(headline, { autoAlpha: 0, y: 24, duration: 0.6 }, 0);
       }
 
-      tl.from(items, { autoAlpha: 0, y: 18, duration: 0.6, stagger: 0.08 }, 0.35);
+      tl.from(items, { autoAlpha: 0, y: 18, duration: 0.5, stagger: 0.07 }, 0.2);
       if (mark) {
         tl.from(
           mark,

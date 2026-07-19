@@ -57,7 +57,7 @@ export function HeroSection({ headline, subheadline, primaryCta, secondaryCta }:
             <StarSpark className="h-3.5 w-3.5 text-steel-300" />
             {COMPANY.name} — {COMPANY.tagline}
           </p>
-          <h1 data-hero-headline className="mt-6 max-w-[17ch] font-display text-display font-medium">
+          <h1 data-hero-headline className="mt-6 max-w-[17ch] font-display text-display font-medium text-inverse">
             {headline}
           </h1>
           <p data-hero-item className="mt-6 max-w-measure text-lg leading-relaxed text-inverse-muted">

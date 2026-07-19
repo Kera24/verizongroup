@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { StarMark } from "@/components/brand/StarMark";
 import { COMPANY, NAV_LINKS } from "@/lib/config";
@@ -11,7 +10,6 @@ import { COMPANY, NAV_LINKS } from "@/lib/config";
 export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const reducedMotion = useReducedMotion();
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-canvas/90 backdrop-blur">
@@ -62,17 +60,15 @@ export function Navbar() {
         </button>
       </div>
 
-      <AnimatePresence>
-        {open && (
-          <motion.nav
-            id="mobile-nav"
-            aria-label="Main"
-            className="overflow-hidden border-t border-border bg-canvas md:hidden"
-            initial={reducedMotion ? false : { height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={reducedMotion ? undefined : { height: 0, opacity: 0 }}
-            transition={{ duration: 0.26, ease: [0.2, 0, 0, 1] }}
-          >
+      {/* CSS-only expanding sheet (grid-rows trick); transitions are disabled
+          globally under prefers-reduced-motion. */}
+      <div
+        className={`grid transition-[grid-template-rows] duration-slow ease-standard md:hidden ${
+          open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <nav id="mobile-nav" aria-label="Main" className="border-t border-border bg-canvas">
             <div className="container flex flex-col gap-1 py-4 text-sm font-medium">
               {NAV_LINKS.map((link) => {
                 const active = pathname === link.href;
@@ -81,6 +77,7 @@ export function Navbar() {
                     key={link.href}
                     href={link.href}
                     aria-current={active ? "page" : undefined}
+                    tabIndex={open ? undefined : -1}
                     className={`rounded px-3 py-3 transition-colors duration-fast ease-standard hover:bg-canvas-subtle hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-focus-ring ${
                       active ? "bg-canvas-subtle text-ink" : "text-ink-muted"
                     }`}
@@ -93,14 +90,15 @@ export function Navbar() {
               <Link
                 href="/request-service"
                 className="btn-primary mt-2 w-full justify-center"
+                tabIndex={open ? undefined : -1}
                 onClick={() => setOpen(false)}
               >
                 Request a Proposal
               </Link>
             </div>
-          </motion.nav>
-        )}
-      </AnimatePresence>
+          </nav>
+        </div>
+      </div>
     </header>
   );
 }
