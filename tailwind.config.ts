@@ -53,8 +53,12 @@ const config: Config = {
       },
       /* §3 — the shipped scale. */
       fontSize: {
+        /* Max capped at 7.7rem, not 9.25rem: the container stops growing at
+           1280px, so beyond ~1400vw a 9vw glyph size would wrap the hero's
+           deliberate three-line break. 123px keeps the widest line inside
+           the 1120px content column with a small safety margin. */
         "display-xl": [
-          "clamp(3.25rem, 9vw, 9.25rem)",
+          "clamp(3.25rem, 9vw, 7.7rem)",
           { lineHeight: "0.92", letterSpacing: "-0.035em", fontWeight: "600" },
         ],
         "display-l": [

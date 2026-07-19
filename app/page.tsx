@@ -49,7 +49,7 @@ export default function HomePage() {
       </section>
 
       {/* 3 — SERVICES INDEX (§7.3): full-width rows, not cards */}
-      <section id="services" className="section !pb-0">
+      <section id="services" className="section scroll-mt-10 !pb-0">
         <h2 className="sr-only">Services</h2>
         <div className="container flex items-end justify-between pb-12" data-reveal>
           <Slug>yoranix / services</Slug>
@@ -120,7 +120,7 @@ export default function HomePage() {
       </section>
 
       {/* 5 — APPROACH (§7.5): the process line */}
-      <section id="approach" className="section relative bg-canvas-sunk">
+      <section id="approach" className="section relative scroll-mt-10 bg-canvas-sunk">
         <ColumnRules />
         <div className="container relative">
           <div className="space-y-7" data-reveal>
@@ -171,7 +171,7 @@ export default function HomePage() {
       </section>
 
       {/* 6 — WORK / USE CASES (§7.6): editorial blocks in hairline frames */}
-      <section id="work" className="section">
+      <section id="work" className="section scroll-mt-10">
         <div className="container">
           <div className="space-y-7" data-reveal>
             <Slug>yoranix / work</Slug>
@@ -187,13 +187,25 @@ export default function HomePage() {
                 }`}
                 style={{ "--reveal-delay": `${(i % 2) * 60}ms` } as React.CSSProperties}
               >
-                <Slug star={false}>case / {String(i + 1).padStart(2, "0")}</Slug>
-                <h3 className="mt-7 text-h3">{useCase.title}</h3>
-                <p
-                  className={`mt-3 text-body text-grey ${i === 2 ? "max-w-[68ch]" : "max-w-[46ch]"}`}
-                >
-                  {useCase.description}
-                </p>
+                {i === 2 ? (
+                  /* Full-width block reads as a spread: slug + title left,
+                     text right — never an oversized empty card. */
+                  <div className="grid gap-x-6 gap-y-6 md:grid-cols-2">
+                    <div>
+                      <Slug star={false}>case / {String(i + 1).padStart(2, "0")}</Slug>
+                      <h3 className="mt-7 max-w-[16ch] text-h3">{useCase.title}</h3>
+                    </div>
+                    <p className="max-w-[48ch] text-body text-grey md:self-end">
+                      {useCase.description}
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <Slug star={false}>case / {String(i + 1).padStart(2, "0")}</Slug>
+                    <h3 className="mt-7 text-h3">{useCase.title}</h3>
+                    <p className="mt-3 max-w-[46ch] text-body text-grey">{useCase.description}</p>
+                  </>
+                )}
               </article>
             ))}
           </div>
@@ -231,7 +243,7 @@ export default function HomePage() {
           <div className="md:col-span-4">
             <div className="space-y-7 md:sticky md:top-28" data-reveal>
               <Slug>yoranix / faq</Slug>
-              <h2 className="max-w-[12ch] text-h2">Common questions, answered plainly.</h2>
+              <h2 className="max-w-[16ch] text-h2">Common questions, answered plainly.</h2>
               <Link href="/faq" className="link-quiet">
                 All questions
                 <ArrowRight className="h-4 w-4" aria-hidden />

@@ -225,7 +225,6 @@
 }
 .bearing-spin {
   animation: bearing-rotate 240s linear infinite;
-  will-change: transform;
 }
 
 /* §6 — scroll cue: a 24px hairline that draws downward and resets. */
@@ -318,12 +317,6 @@ html.lenis body {
 }
 .lenis.lenis-stopped {
   overflow: hidden;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
 }
 
 /* Reduced motion: everything renders instantly, fully legible. */

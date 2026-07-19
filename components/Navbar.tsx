@@ -16,7 +16,7 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-hairline bg-canvas/85 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-hairline bg-canvas">
       <div className="container flex h-16 items-center justify-between">
         <Link
           href="/"

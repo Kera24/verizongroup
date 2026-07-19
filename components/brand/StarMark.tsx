@@ -57,20 +57,17 @@ export function BearingStar(props: SVGProps<SVGSVGElement>) {
       aria-hidden
       {...props}
     >
-      <path
-        data-bearing-path
-        d={STAR_BODY_PATH}
-        stroke="currentColor"
-        strokeWidth={1}
-        vectorEffect="non-scaling-stroke"
-      />
+      {/* Stroke width in viewBox units (≈1px rendered) rather than
+          vector-effect: non-scaling-stroke — the latter forces a full
+          re-rasterisation every animation frame, which kills soft-rendered
+          machines while the bearing rotates. */}
+      <path data-bearing-path d={STAR_BODY_PATH} stroke="currentColor" strokeWidth={0.3} />
       <path
         data-bearing-path
         d={STAR_DIAMOND_PATH}
         className="text-steel/60"
         stroke="currentColor"
-        strokeWidth={1}
-        vectorEffect="non-scaling-stroke"
+        strokeWidth={0.3}
       />
     </svg>
   );

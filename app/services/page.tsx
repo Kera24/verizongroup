@@ -53,15 +53,15 @@ export default function ServicesPage() {
               className="scroll-mt-20 border-b border-hairline"
             >
               <div className="container grid gap-x-6 gap-y-9 py-16 md:grid-cols-12 md:py-24">
-                <div className="flex items-start gap-6 md:col-span-4" data-reveal>
+                <div className="flex items-start gap-6 md:col-span-5" data-reveal>
                   <span className="slug tabular pt-2.5" aria-hidden>
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <h2 id={`${service.slug}-title`} className="max-w-[13ch] text-h2">
+                  <h2 id={`${service.slug}-title`} className="max-w-[16ch] text-h2">
                     {service.title}
                   </h2>
                 </div>
-                <div className="space-y-8 md:col-span-7 md:col-start-6" data-reveal>
+                <div className="space-y-8 md:col-span-6 md:col-start-7" data-reveal>
                   <p className="max-w-[52ch] text-body-l text-grey">{service.description}</p>
                   <ul className="border-t border-hairline">
                     {items.map((item) => (

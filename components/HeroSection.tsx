@@ -22,14 +22,15 @@ export function HeroSection() {
       <ColumnRules hero />
 
       {/* §5a — the bearing: hairline star, one revolution per ~240s,
-          gentle pointer parallax (fine pointers only). */}
+          gentle pointer parallax (fine pointers only). Anchored to the
+          top so it stays composed above the fold on short viewports. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute right-[-30%] top-[24%] sm:right-[-12%] md:top-1/2 md:-translate-y-[60%] lg:right-[4%]"
+        className="pointer-events-none absolute right-[-32%] top-[10%] sm:right-[-10%] md:right-[4%] md:top-[7%] lg:right-[7%]"
       >
         <div data-hero-parallax>
           <div className="bearing-spin">
-            <BearingStar className="h-[70vmin] w-[70vmin] text-ink/40 md:h-[62vmin] md:w-[62vmin]" />
+            <BearingStar className="h-[min(74vmin,560px)] w-auto text-ink/40" />
           </div>
         </div>
       </div>
@@ -37,8 +38,8 @@ export function HeroSection() {
       <HeroMotion />
 
       {/* Headline block — low-left (§6), columns 1–7 */}
-      <div className="container relative flex flex-1 flex-col justify-end pb-32 pt-28 md:pb-40">
-        <div className="max-w-[46rem] xl:max-w-[54rem]">
+      <div className="container relative flex flex-1 flex-col justify-end pb-24 pt-24 md:pb-32">
+        <div>
           <h1 className="font-display text-display-xl text-ink">
             {HEADLINE_LINES.map((line) => (
               <span key={line} className="-mb-[0.09em] block overflow-hidden pb-[0.09em]">
@@ -48,10 +49,10 @@ export function HeroSection() {
               </span>
             ))}
           </h1>
-          <p data-hero-sub className="mt-9 max-w-[52ch] text-body-l text-grey">
+          <p data-hero-sub className="mt-8 max-w-[52ch] text-body-l text-grey">
             {COMPANY.positioning}
           </p>
-          <div data-hero-sub className="mt-10 flex flex-wrap items-center gap-7">
+          <div data-hero-sub className="mt-9 flex flex-wrap items-center gap-7">
             <Link href="/request-service" className="btn-primary">
               Start a project
             </Link>
